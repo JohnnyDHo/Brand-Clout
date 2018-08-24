@@ -1,23 +1,22 @@
-#! python3
 import praw
 import pandas as pd
 import datetime as dt
 import config
 
-reddit = praw.Reddit(client_id=config.client_id, \
-                     client_secret=config.client_secret, \
-                     user_agent=config.user_agent, \
-                     username=config.username, \
+reddit = praw.Reddit(client_id=config.client_id,
+                     client_secret=config.client_secret,
+                     user_agent=config.user_agent,
+                     username=config.username,
                      password=config.password)
 
 subreddit = reddit.subreddit('cars')
 top_subreddit = subreddit.top()
 
-topics_dict = { "title":[], \
-                "score":[], \
-                "id":[], "url":[], \
-                "comms_num": [], \
-                "created": []}
+topics_dict = {"title": [],
+               "score": [],
+               "id": [], "url": [],
+               "comms_num": [],
+               "created": []}
 
 
 for submission in top_subreddit:
@@ -35,5 +34,5 @@ def get_date(created):
 
 
 _timestamp = topics_data["created"].apply(get_date)
-topics_data = topics_data.assign(timestamp = _timestamp)
+topics_data = topics_data.assign(timestamp=_timestamp)
 topics_data.to_csv('FILENAME.csv', index=False)
