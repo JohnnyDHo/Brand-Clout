@@ -2,8 +2,13 @@
 import praw
 import pandas as pd
 import datetime as dt
+import config
 
-reddit = praw.Reddit() #Hidden keys
+reddit = praw.Reddit(client_id=config.client_id, \
+                     client_secret=config.client_secret, \
+                     user_agent=config.user_agent, \
+                     username=config.username, \
+                     password=config.password)
 
 subreddit = reddit.subreddit('cars')
 top_subreddit = subreddit.top()
