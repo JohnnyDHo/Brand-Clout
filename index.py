@@ -2,6 +2,8 @@ import praw
 import pandas as pd
 import datetime as dt
 import config
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 
 reddit = praw.Reddit(client_id=config.client_id,
                      client_secret=config.client_secret,
@@ -35,4 +37,16 @@ def get_date(created):
 
 _timestamp = topics_data["created"].apply(get_date)
 topics_data = topics_data.assign(timestamp=_timestamp)
-topics_data.to_csv('FILENAME.csv', index=False)
+
+scope = 'https://www.googleapis.com/auth/drive'
+
+credentials = ServiceAccountCredentials.from_json_keyfile_name("Brand Clout-7885e8400fd4.json", scope)
+
+gc = gspread.authorize(credentials)
+
+wks = gc.open('d').sheet1
+i = 5
+for title in topics_dict["title"]:
+    wks.update_cell(i, 1, title)
+    i += 1
+#topics_data.to_csv('FILENAME.csv', index=False)
